@@ -1,0 +1,61 @@
+name: tagpr
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  tagpr:
+    runs-on: ubuntu-latest
+
+    outputs:
+      release_tag: ${{ steps.tagpr.outputs.tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GIT_PAT }}
+
+      - uses: Songmu/tagpr@v1
+        id: tagpr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+
+      - name: debug
+        run: echo $RELEASE_TAG
+        env:
+          RELEASE_TAG: ${{ steps.tagpr.outputs.tag }}
+
+  update_tag:
+    if: needs.tagpr.outputs.release_tag != ''
+    runs-on: ubuntu-latest
+    needs: [tagpr]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: debug
+        run: echo $RELEASE_TAG
+        env:
+          RELEASE_TAG: ${{ needs.tagpr.outputs.release_tag }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Update tag
+        run: |
+          git ls-files | grep -E "action\.yml$" | xargs -n 1 sed -i "s|uses: $GITHUB_REPOSITORY/\(.*\)@main|uses: $GITHUB_REPOSITORY/\1@$RELEASE_TAG|"
+          git checkout -b "release/$RELEASE_TAG"
+          git ls-files | grep -E "action\.yml$" | xargs git add
+          git commit --amend --no-edit
+          git tag $RELEASE_TAG
+          git push -f origin $RELEASE_TAG
+        env:
+          RELEASE_TAG: ${{ needs.tagpr.outputs.release_tag }}

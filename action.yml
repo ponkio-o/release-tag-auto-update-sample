@@ -1,0 +1,24 @@
+name: Sample actions
+description: sample
+
+inputs:
+  message:
+    description: "message"
+    required: true
+  token:
+    default: "${{ github.token }}"
+    required: false
+    description: "GITHUB_TOKEN"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run ci-info
+      uses: ponkio-o/release-tag-auto-update-sample/ci-info@v0.1.1
+      with:
+        token: ${{ inputs.token }}
+
+    - name: Echo message
+      uses: ponkio-o/release-tag-auto-update-sample/message@v0.1.1
+      with:
+        message: ${{ inputs.message }}
