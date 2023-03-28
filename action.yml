@@ -14,11 +14,11 @@ runs:
   using: "composite"
   steps:
     - name: Run ci-info
-      uses: ponkio-o/release-tag-auto-update-sample/ci-info@main
+      uses: ponkio-o/release-tag-auto-update-sample/ci-info@v0.0.10
       with:
         token: ${{ inputs.token }}
 
     - name: Echo message
-      uses: ponkio-o/release-tag-auto-update-sample/message@main
+      uses: ponkio-o/release-tag-auto-update-sample/message@v0.0.10
       with:
         message: ${{ inputs.message }}
