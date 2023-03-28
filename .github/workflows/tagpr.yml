@@ -32,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [tagpr]
 
+    permissions:
+      contents: write
+
     steps:
       - name: debug
         run: echo $RELEASE_TAG
