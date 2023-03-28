@@ -22,12 +22,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
 
+      - name: debug
+        run: echo $RELEASE_TAG
+        env:
+          RELEASE_TAG: ${{ steps.tagpr.outputs.tag }}
+
   update_tag:
     if: needs.tagpr.outputs.release_tag != ''
     runs-on: ubuntu-latest
     needs: [tagpr]
 
     steps:
+      - name: debug
+        run: echo $RELEASE_TAG
+        env:
+          RELEASE_TAG: ${{ needs.tagpr.outputs.release_tag }}
+
       - name: Checkout
         uses: actions/checkout@v3
 
