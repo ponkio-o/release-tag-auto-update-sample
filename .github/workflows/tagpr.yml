@@ -50,7 +50,7 @@ jobs:
         run: |
           git ls-files | grep -E "action\.yml$" | xargs -n 1 sed -i "s|uses: ponkio-o/release-tag-auto-update-sample/\(.*\)@main|uses: ponkio-o/release-tag-auto-update-sample/\1@$RELEASE_TAG|"
           git checkout -b "release/$RELEASE_TAG"
-          git ls-files | grep -E "/action\.yml$" | xargs git add
+          git ls-files | grep -E "action\.yml$" | xargs git add
           git commit -m "chore: release $RELEASE_TAG"
           git tag $RELEASE_TAG
           git push origin $RELEASE_TAG
