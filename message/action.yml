@@ -1,0 +1,17 @@
+name: Echo message
+description: Run
+
+inputs:
+  message:
+    description: "message"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Echo message
+      shell: bash
+      run: |
+        echo $MESSAGE
+        echo $CI_INFO_TEMP_DIR
+      env:
+        MESSAGE: ${{ inputs.message }}
