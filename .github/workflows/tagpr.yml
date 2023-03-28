@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.GIT_PAT }}
 
       - uses: Songmu/tagpr@v1
-        id: tgpr
+        id: tagpr
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
 
