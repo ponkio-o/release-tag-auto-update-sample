@@ -56,6 +56,6 @@ jobs:
           git ls-files | grep -E "action\.yml$" | xargs git add
           git commit -m "chore: release $RELEASE_TAG"
           git tag $RELEASE_TAG
-          git push origin $RELEASE_TAG
+          git push -f origin $RELEASE_TAG
         env:
           RELEASE_TAG: ${{ needs.tagpr.outputs.release_tag }}
