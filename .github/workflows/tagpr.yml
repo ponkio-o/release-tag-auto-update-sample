@@ -44,7 +44,7 @@ jobs:
           git ls-files | grep -E "action\.yml$" | xargs -n 1 sed -i "s|uses: $GITHUB_REPOSITORY/\(.*\)@main|uses: $GITHUB_REPOSITORY/\1@$RELEASE_TAG|"
           git checkout -b "release/$RELEASE_TAG"
           git ls-files | grep -E "action\.yml$" | xargs git add
-          git commit --amend --no-edit
+          git commit -m "chore: update tag"
           git tag $RELEASE_TAG
           git push -f origin $RELEASE_TAG
         env:
